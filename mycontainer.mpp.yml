@@ -92,7 +92,7 @@ pipelines:
         to: tree:///usr/lib/validator/keys/etc.key
       - from:
           mpp-format-string: input://inlinefile3/{embedded['validator.boot']}
-        to: tree:// /etc/validator/boot.d/validator.boot
+        to: tree:///etc/validator/boot.d/validator.boot
 
   # Create the guest user
   - type: org.osbuild.users
