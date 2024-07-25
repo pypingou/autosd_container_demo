@@ -42,6 +42,8 @@ pipelines:
               - podman
               - tar
               - validator
+              - openssh-clients
+              - openssh-server
 
   # Get the CS9 base container in
   - type: org.osbuild.skopeo
