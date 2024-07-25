@@ -3,6 +3,9 @@ mpp-vars:
   name: mycontainer-manifest
   use_containers_extra_store: true
   use_composefs: true
+  dracut_modules:
+  - validator
+  is_autoinit_supported: false
 
 pipelines:
 - name: rootfs
