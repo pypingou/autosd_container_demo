@@ -35,6 +35,7 @@ pipelines:
             mpp-join:
             - mpp-eval: image_rpms
             - - vim
+              - dnf
               - podman
               - tar
               - validator
