@@ -80,7 +80,7 @@ pipelines:
         type: org.osbuild.files
         origin: org.osbuild.source
         mpp-embed:
-          id: public.pem
+          id: validator.boot
           path: ./files/validator.boot
     options:
       paths:
