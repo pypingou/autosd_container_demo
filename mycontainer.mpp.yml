@@ -1,6 +1,8 @@
 version: '2'
 mpp-vars:
   name: mycontainer-manifest
+  use_containers_extra_store: true
+
 pipelines:
 - name: rootfs
   build: name:build
