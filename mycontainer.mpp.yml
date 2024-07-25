@@ -59,23 +59,6 @@ pipelines:
         storage-path:
           mpp-eval: containers_extra_store
 
-  # Get another sample container in
-  - type: org.osbuild.skopeo
-    inputs:
-      images:
-        type: org.osbuild.containers
-        origin: org.osbuild.source
-        mpp-resolve-images:
-          images:
-            - source: registry.gitlab.com/centos/automotive/sample-images/demo/auto-apps
-              tag: latest
-              name: localhost/auto-apps
-    options:
-      destination:
-        type: containers-storage
-        storage-path:
-          mpp-eval: containers_extra_store
-
   # Get a V1 quadlet
   # Install the public key used by validator
   # Install the dracut module for validator
