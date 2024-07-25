@@ -1,0 +1,81 @@
+version: '2'
+mpp-vars:
+  name: mycontainer-manifest
+pipelines:
+- name: rootfs
+  build: name:build
+  stages:
+  
+  # Install some RPMs
+  - type: org.osbuild.rpm
+    options:
+      gpgkeys:
+      - mpp-eval: distro_gpg_keys
+      disable_dracut: true
+      exclude:
+        docs: true
+    inputs:
+      packages:
+        type: org.osbuild.files
+        origin: org.osbuild.source
+        mpp-depsolve:
+          architecture: $arch
+          ignore-weak-deps: true
+          module-platform-id: $distro_module_id
+          baseurl: $distro_baseurl_repo
+          repos:
+            mpp-join:
+            - mpp-eval: image_repos
+            - mpp-eval: extra_repos
+            - - id: copr_can_utils
+                baseurl: https://download.copr.fedorainfracloud.org/results/@centos-automotive-sig/can-utils/centos-stream-9-$arch/
+              - id: copr_validator
+                baseurl: https://download.copr.fedorainfracloud.org/results/@centos-automotive-sig/validator/centos-stream+epel-next-9-$arch/
+          packages:
+            mpp-join:
+            - mpp-eval: image_rpms
+            - - vim
+              - podman
+              - tar
+              - validator
+
+  # Get the CS9 base container in
+  - type: org.osbuild.skopeo
+    inputs:
+      images:
+        type: org.osbuild.containers
+        origin: org.osbuild.source
+        mpp-resolve-images:
+          images:
+            - source: quay.io/centos/centos
+              tag: stream9
+              name: localhost/cs9
+    options:
+      destination:
+        type: containers-storage
+        storage-path:
+          mpp-eval: containers_extra_store
+
+  # Get a V1 quadlet
+  - type: org.osbuild.copy
+    inputs:
+      inlinefile1:
+        type: org.osbuild.files
+        origin: org.osbuild.source
+        mpp-embed:
+          id: app_v1.container
+          path: ./files/app_v1.container
+    options:
+      paths:
+      - from:
+          mpp-format-string: input://inlinefile1/{embedded['app_v1.container']}
+        to: tree:///etc/containers/systemd/app_v1.container
+
+  # Create the guest user
+  - type: org.osbuild.users
+    options:
+      users:
+        guest:
+          password: "$6$xoLqEUz0cGGJRx01$H3H/bFm0myJPULNMtbSsOFd/2BnHqHkMD92Sfxd.EKM9hXTWSmELG8cf205l6dktomuTcgKGGtGDgtvHVXSWU."
+          gid: 999
+          uid: 999

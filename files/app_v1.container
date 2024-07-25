@@ -1,0 +1,13 @@
+[Unit]
+Description=App v1 demo
+
+[Container]
+Image=localhost/cs9
+Exec=while 1; do echo "App v1"; sleep 30; done
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
