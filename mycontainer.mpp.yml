@@ -5,7 +5,7 @@ pipelines:
 - name: rootfs
   build: name:build
   stages:
-  
+
   # Install some RPMs
   - type: org.osbuild.rpm
     options:
@@ -51,6 +51,23 @@ pipelines:
             - source: quay.io/centos/centos
               tag: stream9
               name: localhost/cs9
+    options:
+      destination:
+        type: containers-storage
+        storage-path:
+          mpp-eval: containers_extra_store
+
+  # Get another sample container in
+  - type: org.osbuild.skopeo
+    inputs:
+      images:
+        type: org.osbuild.containers
+        origin: org.osbuild.source
+        mpp-resolve-images:
+          images:
+            - source: registry.gitlab.com/centos/automotive/sample-images/demo/auto-apps
+              tag: latest
+              name: localhost/auto-apps
     options:
       destination:
         type: containers-storage
