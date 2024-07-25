@@ -3,7 +3,7 @@ Description=App v1 demo
 
 [Container]
 Image=localhost/cs9
-Exec=rpm -q dnf vim emacs
+Exec=rpm -q dnf vim
 
 [Service]
 Restart=always
