@@ -1,0 +1,13 @@
+[Unit]
+Description=App v1 demo
+
+[Container]
+Image=localhost/cs9
+Exec=rpm -q dnf vim emacs
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
