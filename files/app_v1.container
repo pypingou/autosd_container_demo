@@ -2,8 +2,8 @@
 Description=App v1 demo
 
 [Container]
-Image=localhost/cs9
-Exec=while 1; do echo "App v1"; sleep 30; done
+Image=quay.io/centos/centos:stream9
+Exec=while true; do echo "App v1"; sleep 10; done
 
 [Service]
 Restart=always
