@@ -68,6 +68,7 @@ pipelines:
   # Get a V1 quadlet
   # Install the public key used by validator
   # Install the dracut module for validator
+  # Override the dracut validator service
   - type: org.osbuild.copy
     inputs:
       inlinefile1:
@@ -88,6 +89,12 @@ pipelines:
         mpp-embed:
           id: validator.boot
           path: ./files/validator.boot
+      inlinefile4:
+        type: org.osbuild.files
+        origin: org.osbuild.source
+        mpp-embed:
+          id: validator-boot.service
+          path: ./files/validator-boot.service
     options:
       paths:
       - from:
@@ -99,6 +106,9 @@ pipelines:
       - from:
           mpp-format-string: input://inlinefile3/{embedded['validator.boot']}
         to: tree:///etc/validator/boot.d/validator.boot
+      - from:
+          mpp-format-string: input://inlinefile4/{embedded['validator-boot.service']}
+        to: tree:///usr/lib/dracut/modules.d/98validator/validator-boot.service
 
   # Create the guest user
   - type: org.osbuild.users
