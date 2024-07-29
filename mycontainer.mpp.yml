@@ -116,6 +116,12 @@ pipelines:
           mpp-format-string: input://inlinefile4/{embedded['validator.service']}
         to: tree:///etc/systemd/system/validator.service
 
+  # Enable our validator service
+  - type: org.osbuild.systemd
+    options:
+      enabled_services:
+      - validator.service
+
   # Create the guest user
   - type: org.osbuild.users
     options:
