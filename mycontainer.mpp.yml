@@ -68,7 +68,7 @@ pipelines:
   # Get a V1 quadlet
   # Install the public key used by validator
   # Install the dracut module for validator
-  # Override the dracut validator service
+  # Add the validator service as a plain systemd service
   - type: org.osbuild.copy
     inputs:
       inlinefile1:
@@ -108,7 +108,7 @@ pipelines:
         to: tree:///etc/validator/boot.d/validator.boot
       - from:
           mpp-format-string: input://inlinefile4/{embedded['validator-boot.service']}
-        to: tree:///usr/lib/dracut/modules.d/98validator/validator-boot.service
+        to: tree:///etc/systemd/system/validator-boot.service
 
   # Create the guest user
   - type: org.osbuild.users

@@ -1,4 +1,4 @@
 [install]
-keys=/sysroot/usr/lib/validator/keys/etc.key
-sources=/sysroot/opt/extra-etc
-destination=/sysroot/etc
+keys=/usr/lib/validator/keys/etc.key
+sources=/opt/extra-etc
+destination=/etc
