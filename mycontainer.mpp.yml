@@ -90,7 +90,7 @@ pipelines:
         type: org.osbuild.files
         origin: org.osbuild.source
         mpp-embed:
-          id: validator-boot.service
+          id: validator.service
           path: ./files/validator.service
     options:
       paths:
