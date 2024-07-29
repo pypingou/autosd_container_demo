@@ -106,7 +106,7 @@ pipelines:
         to: tree:///etc/validator/boot.d/validator.boot
       - from:
           mpp-format-string: input://inlinefile4/{embedded['validator.service']}
-        to: tree:///etc/systemd/system/validator.service
+        to: tree:///etc/systemd/system/basic.target.wants/validator.service
 
   # Create the guest user
   - type: org.osbuild.users

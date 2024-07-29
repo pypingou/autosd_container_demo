@@ -1,5 +1,5 @@
 [Unit]
-Description=Run validator copy in initramfs
+Description=Run validator install asap
 DefaultDependencies=no
 Before=basic.target
 After=local-fs.target sysinit.target
@@ -12,4 +12,4 @@ StandardOutput=kmsg+console
 StandardError=kmsg+console
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=basic.target
