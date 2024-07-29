@@ -1,8 +1,9 @@
 [Unit]
 Description=Run validator install asap
-DefaultDependencies=no
 Before=basic.target
+Wants=local-fs.target sysinit.target
 After=local-fs.target sysinit.target
+
 
 [Service]
 Type=oneshot
