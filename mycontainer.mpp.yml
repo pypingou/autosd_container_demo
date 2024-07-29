@@ -63,14 +63,6 @@ pipelines:
         storage-path:
           mpp-eval: containers_extra_store
 
-  # Ensures /etc/systemd/system/basic.target.wants/ exists before we put
-  # something theree
-  - type: org.osbuild.mkdir
-    options:
-      paths:
-      - path: /etc/systemd/system/basic.target.wants/
-        parents: true
-
   # Get a V1 quadlet
   # Install the public key used by validator
   # Install the dracut module for validator
