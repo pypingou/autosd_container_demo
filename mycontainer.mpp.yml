@@ -2,7 +2,7 @@ version: '2'
 mpp-vars:
   name: mycontainer-manifest
   use_containers_extra_store: true
-  use_composefs: false
+  use_composefs: true
 
 pipelines:
 - name: rootfs
@@ -38,7 +38,7 @@ pipelines:
             mpp-join:
             - mpp-eval: image_rpms
             - - vim
-              - dnf
+              - wget
               - podman
               - tar
               - validator
