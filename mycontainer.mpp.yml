@@ -95,6 +95,12 @@ pipelines:
         mpp-embed:
           id: validator.service
           path: ./files/validator.service
+      inlinefile5:
+        type: org.osbuild.files
+        origin: org.osbuild.source
+        mpp-embed:
+          id: install_app
+          path: ./files/install_app.sh
     options:
       paths:
       - from:
@@ -109,6 +115,9 @@ pipelines:
       - from:
           mpp-format-string: input://inlinefile4/{embedded['validator.service']}
         to: tree:///etc/systemd/system/validator.service
+      - from:
+          mpp-format-string: input://inlinefile5/{embedded['install_app']}
+        to: tree:///usr/bin/install_app
 
   # Enable our validator service
   - type: org.osbuild.systemd
