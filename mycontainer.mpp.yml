@@ -45,6 +45,8 @@ pipelines:
               - tree
               - openssh-clients
               - openssh-server
+              # Required for the semanage command:
+              - policycoreutils-python-utils
 
   # Get the CS9 base container in
   - type: org.osbuild.skopeo
