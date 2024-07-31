@@ -55,3 +55,57 @@ cd automotive-image-builder
 ./automotive-image-runner --nographics image.qcow2
 ```
 
+Installing a demo app
+---------------------
+
+We have a tarball with a demo "app" available that can be used.
+
+Here are the commands you can follow to install this app:
+
+```
+# Download application and its signature
+wget https://pingou.fedorapeople.org/a2.tar.gz
+wget https://pingou.fedorapeople.org/a2.tar.gz.sig
+
+# Check its signature
+validator -v validate --key /usr/lib/validator/keys/etc.key a2.tar.gz
+
+# Install the application
+bash /usr/bin/install_app a2.tar.gz
+systemctl restart validator
+
+# Show that nothing changed
+systemctl status fedora-minimal
+
+# Reload
+systemctl daemon-reload
+
+# New app is there \ó/
+systemctl status fedora-minimal
+systemctl start fedora-minimal
+systemctl status fedora-minimal
+```
+
+TODO and Knonw issues
+---------------------
+
+TODO
+* Move the validation of the tarball/app into the install_app script
+  (there is no need to keep it separate)
+
+Known issues:
+* Validator was originally intended to run into dracut, the idea is to run
+  validator before the systemd generator are ran, this way validator
+  installs the quadlet files before the quadlet generator is ran and
+  converts them into systemd service files. The issue is that, I could not
+  make it work in dracut as in dracut the view of the filesystem is limited
+  and I could not find how to access the content that will end up being
+  in `/var` or `/opt`. In other words, I was not able to make validator
+  find the files the validate and install. I've thus moved it to a regular
+  systemd service file that is executed before `basic.target` in the boot
+  chain, but that's already too late, the quadlet generator has already
+  ran. This means that currently, we need to execute a `systemctl daemon-reload`
+  after the `validator` service is ran. We could automate this by adding
+  `ExecStartPost=systemctl daemon-reload` in `validator.service`, we would
+  then need to consider "restarting validator" as the action one would have
+  to do move from the running transaction to the next one.
