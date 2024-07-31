@@ -3,7 +3,7 @@ Description=Run validator install asap
 Before=basic.target
 Wants=local-fs.target sysinit.target
 After=local-fs.target sysinit.target
-
+DefaultDependencies=no
 
 [Service]
 Type=oneshot
