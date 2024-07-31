@@ -3,6 +3,9 @@ mpp-vars:
   name: mycontainer-manifest
   use_containers_extra_store: true
   use_composefs: true
+  dracut_add_modules:
+  - validator
+  is_autoinit_supported: false
 
 pipelines:
 - name: rootfs
@@ -65,42 +68,51 @@ pipelines:
         storage-path:
           mpp-eval: containers_extra_store
 
-  # Get a V1 quadlet
-  # Install the public key used by validator
-  # Install the dracut module for validator
-  # Add the validator service as a plain systemd service
+  # Install the files we want on the image
   - type: org.osbuild.copy
     inputs:
+      # Get a V1 quadlet
       inlinefile1:
         type: org.osbuild.files
         origin: org.osbuild.source
         mpp-embed:
           id: app_v1.container
           path: ./files/app_v1.container
+      # Install the public key used by validator
       inlinefile2:
         type: org.osbuild.files
         origin: org.osbuild.source
         mpp-embed:
           id: public.pem
           path: ./files/public.pem
+      # Install the validator configuration file
       inlinefile3:
         type: org.osbuild.files
         origin: org.osbuild.source
         mpp-embed:
           id: validator.boot
           path: ./files/validator.boot
+      # Add the validator service as a plain systemd service
       inlinefile4:
         type: org.osbuild.files
         origin: org.osbuild.source
         mpp-embed:
           id: validator.service
           path: ./files/validator.service
+      # Install the install_app script
       inlinefile5:
         type: org.osbuild.files
         origin: org.osbuild.source
         mpp-embed:
           id: install_app
           path: ./files/install_app.sh
+      # Install the dracut module for validator
+      inlinefile6:
+        type: org.osbuild.files
+        origin: org.osbuild.source
+        mpp-embed:
+          id: validator-boot.service
+          path: ./files/validator-boot.service
     options:
       paths:
       - from:
@@ -118,6 +130,9 @@ pipelines:
       - from:
           mpp-format-string: input://inlinefile5/{embedded['install_app']}
         to: tree:///usr/bin/install_app
+      - from:
+          mpp-format-string: input://inlinefile6/{embedded['validator-boot.service']}
+        to: tree:///usr/lib/dracut/modules.d/98validator/validator-boot.service
 
   # Enable our validator service
   - type: org.osbuild.systemd

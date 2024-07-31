@@ -1,0 +1,14 @@
+[Unit]
+Description=Run validator install in initramfs
+DefaultDependencies=no
+ConditionPathExists=/etc/initrd-release
+After=initrd.target
+Before=initrd-switch-root.target
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/ls -l /
+ExecStart=/usr/bin/ls -R /
+RemainAfterExit=yes
+StandardOutput=kmsg+console
+StandardError=kmsg+console
