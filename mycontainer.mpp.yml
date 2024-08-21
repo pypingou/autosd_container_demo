@@ -48,12 +48,9 @@ pipelines:
               - tree
               - openssh-clients
               - openssh-server
-<<<<<<< Updated upstream
+              - kernel-automotive-modules-extra
               # Required for the semanage command:
               - policycoreutils-python-utils
-=======
-              - kernel-automotive-module-extras
->>>>>>> Stashed changes
 
   # Get the CS9 base container in
   - type: org.osbuild.skopeo
