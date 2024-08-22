@@ -1,5 +1,5 @@
 [Unit]
-Description=Run validator install in initramfs
+Description=Run validator copy in initramfs
 DefaultDependencies=no
 ConditionPathExists=/etc/initrd-release
 After=initrd.target
@@ -7,8 +7,6 @@ Before=initrd-switch-root.target
 
 [Service]
 Type=oneshot
-ExecStartPre=/usr/bin/ls -l /
-ExecStart=/usr/bin/ls -R /
+ExecStartPre=/usr/bin/ls -l /sysroot/ostree/deploy/centos/var/
+ExecStart=validator -vvv install --config-dir=/etc/validator/boot.d --config-dir=/usr/lib/validator/boot.d
 RemainAfterExit=yes
-StandardOutput=kmsg+console
-StandardError=kmsg+console
