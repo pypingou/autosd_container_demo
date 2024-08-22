@@ -64,14 +64,14 @@ Here are the commands you can follow to install this app:
 
 ```
 # Download application and its signature
-wget https://pingou.fedorapeople.org/a2.tar.gz
-wget https://pingou.fedorapeople.org/a2.tar.gz.sig
+wget https://pingou.fedorapeople.org/a3.tar.gz
+wget https://pingou.fedorapeople.org/a3.tar.gz.sig
 
 # Check its signature
-validator -v validate --key /usr/lib/validator/keys/etc.key a2.tar.gz
+validator -v validate --key /usr/lib/validator/keys/etc.key a3.tar.gz
 
 # Install the application
-bash /usr/bin/install_app a2.tar.gz
+bash /usr/bin/install_app a3.tar.gz
 systemctl restart validator
 
 # Show that nothing changed
