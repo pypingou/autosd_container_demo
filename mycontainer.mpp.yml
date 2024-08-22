@@ -5,6 +5,8 @@ mpp-vars:
   use_composefs: true
   dracut_add_modules:
   - validator
+  dracut_install:
+    - /usr/lib/validator/keys/etc.key
   is_autoinit_supported: false
 
 pipelines:
