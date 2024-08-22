@@ -39,7 +39,7 @@ install_tarball() {
         restorecon -R -v $ROOT_DIR/apps/$dir/imagestore
     done
 
-    ln -snf $transaction_dir $ROOT_DIR/quadlets
+    ln -sf $transaction_dir $ROOT_DIR/quadlets
 }
 
 mkdir -p $ROOT_DIR/apps/
