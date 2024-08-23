@@ -71,8 +71,11 @@ wget https://pingou.fedorapeople.org/a3.tar.gz.sig
 validator -v validate --key /usr/lib/validator/keys/etc.key a3.tar.gz
 
 # Install the application
-bash /usr/bin/install_app a3.tar.gz
-systemctl restart validator
+#bash /usr/bin/install_app a3.tar.gz
+#systemctl restart validator
+tar xvfz a3.tar.gz
+cp -a var /
+validator -vvv install --config-dir=/etc/validator/boot.d --config-dir=/usr/lib/validator/boot.d --relative-to /sysroot/ostree/deploy/centos/var/
 
 # Show that nothing changed
 systemctl status fedora-minimal
