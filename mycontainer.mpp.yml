@@ -69,13 +69,6 @@ pipelines:
         storage-path:
           mpp-eval: containers_extra_store
 
-  # Ensures /var/quadlets/ exists, makes validator happier
-  - type: org.osbuild.mkdir
-    options:
-      paths:
-      - path: /var/quadlets/
-        parents: true
-
   # Install the files we want on the image
   - type: org.osbuild.copy
     inputs:
