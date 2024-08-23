@@ -46,6 +46,7 @@ pipelines:
               - tar
               - validator
               - tree
+              - less
               - openssh-clients
               - openssh-server
               - kernel-automotive-modules-extra
