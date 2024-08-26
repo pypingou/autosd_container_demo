@@ -2,8 +2,10 @@
 Description=Run validator copy in initramfs
 DefaultDependencies=no
 ConditionPathExists=/etc/initrd-release
-After=initrd.target
+After=initrd-fs.target
 Before=initrd-switch-root.target
+Before=initrd-cleanup.service
+Conflicts=initrd-switch-root.target
 
 [Service]
 Type=oneshot
