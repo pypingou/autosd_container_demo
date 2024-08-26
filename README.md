@@ -31,7 +31,9 @@ git clone https://gitlab.com/CentOS/automotive/src/automotive-image-builder.git
 git clone https://github.com/pypingou/autosd_container_demo.git
 cd automotive-image-builder
 ./automotive-image-builder \
-    --container build \
+    --container \
+    build \
+    --build-dir _build \
     --distro autosd9 \
     --target qemu \
     --export qcow2 \
