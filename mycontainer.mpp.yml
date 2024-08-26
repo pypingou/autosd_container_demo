@@ -112,7 +112,7 @@ pipelines:
       paths:
       - from:
           mpp-format-string: input://inlinefile1/{embedded['app_v1.container']}
-        to: tree:///etc/containers/systemd/app_v1.container
+        to: tree:///usr/share/containers/systemd/app_v1.container
       - from:
           mpp-format-string: input://inlinefile2/{embedded['public.pem']}
         to: tree:///usr/lib/validator/keys/etc.key
