@@ -64,18 +64,21 @@ Here are the commands you can follow to install this app:
 
 ```
 # Download application and its signature
-wget https://pingou.fedorapeople.org/a3.tar.gz
-wget https://pingou.fedorapeople.org/a3.tar.gz.sig
+wget https://pingou.fedorapeople.org/a6.tar.gz
+wget https://pingou.fedorapeople.org/a6.tar.gz.sig
 
 # Check its signature
-validator -v validate --key /usr/lib/validator/keys/etc.key a3.tar.gz
+validator -v validate --key /usr/lib/validator/keys/etc.key a6.tar.gz
 
-# Install the application
-#bash /usr/bin/install_app a3.tar.gz
-#systemctl restart validator
-tar xvfz a3.tar.gz
-cp -a var /
-validator -vvv install --config-dir=/etc/validator/boot.d --config-dir=/usr/lib/validator/boot.d --relative-to /sysroot/ostree/deploy/centos/var/
+## Install the application
+
+# Unpack the archive
+tar xvfz a6.tar.gz
+# Update containers - data - nothing changes
+cp -a var/apps /var/
+# Update application
+cp -a var/quadlets /var/
+validator -vvv install --config=/etc/validator/validator.conf
 
 # Show that nothing changed
 systemctl status fedora-minimal
