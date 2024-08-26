@@ -136,6 +136,13 @@ pipelines:
           mpp-format-string: input://inlinefile6/{embedded['validator-boot.service']}
         to: tree:///usr/lib/dracut/modules.d/98validator/validator-boot.service
 
+  # Delete the /etc/container/systemd folder so we can symlink it instead
+  - type: org.osbuild.lorax-script
+    options:
+      path: auto/remove
+      product:
+        name: /etc/containers/systemd
+
   # Create the guest user
   - type: org.osbuild.users
     options:
