@@ -87,8 +87,15 @@ pipelines:
         mpp-embed:
           id: public.pem
           path: ./files/public.pem
-      # Install the validator configuration file
+      # Install the validator-boot configuration file
       inlinefile3:
+        type: org.osbuild.files
+        origin: org.osbuild.source
+        mpp-embed:
+          id: validator-boot.conf
+          path: ./files/validator-boot.conf
+      # Install the validator configuration file
+      inlinefile4:
         type: org.osbuild.files
         origin: org.osbuild.source
         mpp-embed:
@@ -117,8 +124,11 @@ pipelines:
           mpp-format-string: input://inlinefile2/{embedded['public.pem']}
         to: tree:///usr/lib/validator/keys/etc.key
       - from:
-          mpp-format-string: input://inlinefile3/{embedded['validator.conf']}
-        to: tree:///etc/validator/boot.d/validator.conf
+          mpp-format-string: input://inlinefile3/{embedded['validator-boot.conf']}
+        to: tree:///etc/validator/boot.d/validator-boot.conf
+      - from:
+          mpp-format-string: input://inlinefile4/{embedded['validator.conf']}
+        to: tree:///etc/validator/validator.conf
       - from:
           mpp-format-string: input://inlinefile5/{embedded['install_app']}
         to: tree:///usr/bin/install_app
