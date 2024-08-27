@@ -3,6 +3,8 @@ mpp-vars:
   name: mycontainer-manifest
   use_containers_extra_store: true
   use_composefs: true
+  dracut_add_modules:
+  - validator
   is_autoinit_supported: false
 
 pipelines:
@@ -33,6 +35,8 @@ pipelines:
             - mpp-eval: extra_repos
             - - id: copr_can_utils
                 baseurl: https://download.copr.fedorainfracloud.org/results/@centos-automotive-sig/can-utils/centos-stream-9-$arch/
+              - id: copr_validator
+                baseurl: https://download.copr.fedorainfracloud.org/results/@centos-automotive-sig/validator/centos-stream+epel-next-9-$arch/
           packages:
             mpp-join:
             - mpp-eval: image_rpms
@@ -40,6 +44,7 @@ pipelines:
               - wget
               - podman
               - tar
+              - validator
               - tree
               - less
               - openssh-clients
@@ -75,11 +80,68 @@ pipelines:
         mpp-embed:
           id: app_v1.container
           path: ./files/app_v1.container
+      # Install the public key used by validator
+      inlinefile2:
+        type: org.osbuild.files
+        origin: org.osbuild.source
+        mpp-embed:
+          id: public.pem
+          path: ./files/public.pem
+      # Install the validator-boot configuration file
+      inlinefile3:
+        type: org.osbuild.files
+        origin: org.osbuild.source
+        mpp-embed:
+          id: validator-boot.conf
+          path: ./files/validator-boot.conf
+      # Install the validator configuration file
+      inlinefile4:
+        type: org.osbuild.files
+        origin: org.osbuild.source
+        mpp-embed:
+          id: validator.conf
+          path: ./files/validator.conf
+      # Install the install_app script
+      inlinefile5:
+        type: org.osbuild.files
+        origin: org.osbuild.source
+        mpp-embed:
+          id: install_app
+          path: ./files/install_app.sh
+      # Install the dracut module for validator
+      inlinefile6:
+        type: org.osbuild.files
+        origin: org.osbuild.source
+        mpp-embed:
+          id: validator-boot.service
+          path: ./files/validator-boot.service
     options:
       paths:
       - from:
           mpp-format-string: input://inlinefile1/{embedded['app_v1.container']}
         to: tree:///usr/share/containers/systemd/app_v1.container
+      - from:
+          mpp-format-string: input://inlinefile2/{embedded['public.pem']}
+        to: tree:///usr/lib/validator/keys/etc.key
+      - from:
+          mpp-format-string: input://inlinefile3/{embedded['validator-boot.conf']}
+        to: tree:///etc/validator/boot.d/validator-boot.conf
+      - from:
+          mpp-format-string: input://inlinefile4/{embedded['validator.conf']}
+        to: tree:///etc/validator/validator.conf
+      - from:
+          mpp-format-string: input://inlinefile5/{embedded['install_app']}
+        to: tree:///usr/bin/install_app
+      - from:
+          mpp-format-string: input://inlinefile6/{embedded['validator-boot.service']}
+        to: tree:///usr/lib/dracut/modules.d/98validator/validator-boot.service
+
+  # Delete the /etc/container/systemd folder so we can symlink it instead
+  - type: org.osbuild.lorax-script
+    options:
+      path: auto/remove
+      product:
+        name: /etc/containers/systemd
 
   # Create the guest user
   - type: org.osbuild.users
