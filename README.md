@@ -209,10 +209,14 @@ cp -a var/apps /var/
 cp -a var/quadlets /var/
 validator -vvv install --config=/etc/validator/validator.conf
 
-# Show that nothing changed
+# So we have installed the application. It is all on disk but from the
+# system's perspective, nothing has changed. systemd is still not aware
+# that this application has been installed (the command below will fail
+# to find the application)
 systemctl status fedora-minimal
 
-# Reload
+# Reload systemd, so it runs quadlet and becomes aware of the new application
+# installed
 systemctl daemon-reload
 
 # New app is there \ó/
