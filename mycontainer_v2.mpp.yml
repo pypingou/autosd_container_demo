@@ -101,13 +101,6 @@ pipelines:
         mpp-embed:
           id: validator.conf
           path: ./files/validator.conf
-      # Install the install_app script
-      inlinefile5:
-        type: org.osbuild.files
-        origin: org.osbuild.source
-        mpp-embed:
-          id: install_app
-          path: ./files/install_app.sh
       # Install the dracut module for validator
       inlinefile6:
         type: org.osbuild.files
