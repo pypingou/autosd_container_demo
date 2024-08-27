@@ -1,0 +1,50 @@
+#!/usr/bin/bash
+
+# Generates single-file from-scratch and delta update files for all or some of the
+# refs in an OSTree repo.
+#
+# To use it run "generate-deltas REPODIR DESTDIR" which will look at all the refs in the
+# repo and make updates to the latest version putting them in the DESTDIR directory.
+
+# To apply these on a live system, do something like:
+# $ ostree static-delta apply-offline cs9-x86_64-qemu-upgrade-demo-79da0b2f1b119e99137eaef9680fae9820a9edcd5cac4f6d7c23279498c578f6.update
+# $ rpm-ostree rebase 79da0b2f1b119e99137eaef9680fae9820a9edcd5cac4f6d7c23279498c578f6
+
+if [ "$#" -lt 2 ]; then
+    echo "Usage generate-deltas REPODIR DESTDIR [REFS..]"
+    exit 1
+fi
+
+REPO=$1
+DIR=$2
+
+shift 2
+
+if [ "$#" -gt 0 ]; then
+    REFS="$@"
+else
+    REFS=$(ostree --repo=$REPO refs)
+fi
+
+mkdir -p $DIR
+
+NUM_DELTAS=3
+for REF in $REFS; do
+    REF_AS_FILE=$(echo $REF | sed "s%/%-%g" )
+    HEAD=$(ostree --repo=$REPO rev-parse $REF)
+
+    # Generate full update for HEAD:
+    echo Generating non-delta update for $REF commit $HEAD
+    ostree static-delta generate --repo=$REPO  --inline --min-fallback-size=0 --empty --filename=$DIR/$REF_AS_FILE-$HEAD.update $HEAD
+
+    # Generate deltas to HEAD from up to the last 3 parents
+    PARENT=$HEAD
+    for i in seq $NUM_DELTAS; do
+        if ! PARENT=$(ostree --repo=$REPO rev-parse $PARENT^ 2>/dev/null); then
+            break;
+        fi
+        echo Generating delta update for $REF commit $HEAD from commit $PARENT
+        ostree static-delta generate --repo=$REPO  --inline --min-fallback-size=0 --from=$PARENT --filename=$DIR/$REF_AS_FILE-$PARENT-$HEAD.update $HEAD
+    done
+
+done
