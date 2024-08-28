@@ -123,9 +123,6 @@ pipelines:
           mpp-format-string: input://inlinefile4/{embedded['validator.conf']}
         to: tree:///etc/validator/validator.conf
       - from:
-          mpp-format-string: input://inlinefile5/{embedded['install_app']}
-        to: tree:///usr/bin/install_app
-      - from:
           mpp-format-string: input://inlinefile6/{embedded['validator-boot.service']}
         to: tree:///usr/lib/dracut/modules.d/98validator/validator-boot.service
 
